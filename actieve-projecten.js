@@ -2,7 +2,7 @@
  * Toon actieve projecten met wat metadata
  */
 
-const projectenFolder = '"01-projects"';
+const projectenFolder = '"1-projects"';
 let pages = dv.pages(`${projectenFolder}`).filter(p => p.type === 'project')
 
 
@@ -13,7 +13,7 @@ function transform(p) {
     let dailyLinks = p
         .file
         .inlinks
-        .filter(l => l.path.startsWith('00-daily'))
+        .filter(l => l.path.startsWith('0-daily'))
         .map(l => fileName(l.path))
         .sort(null, 'desc')
         .slice(0, 2)
@@ -23,7 +23,7 @@ function transform(p) {
     return {
         'naam': dv.fileLink(p.file.name),
         'start': p.start,
-        'inlinks': p.file.inlinks.filter(l => l.path.startsWith('00-daily')).length,
+        'inlinks': p.file.inlinks.filter(l => l.path.startsWith('0-daily')).length,
         'laatste_daily': dailyLinks
     }
 }
