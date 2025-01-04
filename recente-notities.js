@@ -7,7 +7,7 @@
 // Accepteer folder als filter
 const folder = input.folder ? `"${input.folder}"` : '';
 const vandaag = dv.date('today');
-const aantalDagen = 14;
+const aantalDagen = 15;
 const aantalDagenDuration = dv.duration(`${aantalDagen} days`);
 const ondergrens = vandaag - aantalDagenDuration;
 
@@ -21,7 +21,8 @@ function transform(pagina){
     return {
         'naam': dv.fileLink(pagina.file.name),
         'datum': pagina.date,
-        'tags': pagina.file.etags.join(', ')
+        'tags': pagina.file.etags.join(', '),
+        'path': pagina.file.path.slice(0,pagina.file.path.lastIndexOf('/'))
     }
 }
 pages = pages.map(transform);
@@ -32,4 +33,4 @@ pages = pages.sort((p => p.datum), 'desc');
 
 
 // Toon
-dv.table(['naam', 'datum', 'tags'], pages.map(p => [p.naam, p.datum, p.tags]));
+dv.table(['naam', 'datum', 'tags', 'path'], pages.map(p => [p.naam, p.datum, p.tags, p.path]));
