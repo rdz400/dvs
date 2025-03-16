@@ -12,13 +12,22 @@
 /////////////
 
 function display(list){
+    
     let grouped = list
         .groupBy(el => el.path)
         .sort((k => dv.page(k.key).file.name), 'desc');
+
     for (let group of grouped){
-        console.log(dv.page(group.key))
         dv.header(2, dv.fileLink(group.key));
-        dv.list(group.rows.text);
+
+        const baseLevel = group.rows[0].level; // Normalize to first item's depth
+        const mdlist = group.rows
+        .map(({ level, text }) => {
+          const adjustedLevel = Math.max(0, level - baseLevel); // Prevent negative indent
+          return `${" ".repeat(adjustedLevel * 4)}- ${text}`;
+        })
+        .join("\n");
+        dv.paragraph(mdlist);
     }
 }
 
@@ -155,10 +164,11 @@ if (input.link === null){
 } else {
     query = `${fileUrl} and (${tagsAsQuery})`
 }
-console.log(query);
 
 // Alle pagina's die matchen met source
 const pages = dv.pages(query).filter(p => (p.type !== 'dataview')).sort(p => p.file.cday, 'desc');
+
 // Alle regels horend bij bovenstaande
 let lists = pages.file.lists;
+
 main()
