@@ -46,7 +46,6 @@ function laatsteDaily(p) {
 
 
 function extractAreas(p) {
-    // console.log(p.areas);
     const areas = p.areas?.map(el => dv.page(el.path).file.name).join(', ');
     return areas;
 }
